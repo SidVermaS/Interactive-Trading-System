@@ -1,1 +1,1 @@
-# -Interactive-Trading-System
+# Interactive-Trading-System
