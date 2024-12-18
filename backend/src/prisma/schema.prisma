@@ -1,0 +1,97 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["Profile", "Currency", "Trade"]
+}
+
+//#region Profile
+model Client {
+  id        String   @unique @default(uuid()) @db.Uuid
+  name      String   @db.VarChar(32)
+  email     String   @unique @db.VarChar(254)
+  password  String
+  createdAt DateTime @default(now())
+  Order     Order?
+
+  @@id(id)
+  @@map("Client")
+  @@schema("Profile")
+}
+
+model AccountManager {
+  id        String   @unique @default(uuid()) @db.Uuid
+  name      String   @db.VarChar(32)
+  email     String   @unique @db.VarChar(254)
+  password  String
+  createdAt DateTime @default(now())
+
+  @@id(id)
+  @@map("AccountManager")
+  @@schema("Profile")
+}
+
+//#endregion Profile
+
+//#region Currency
+model TradingPair {
+  id                 String @unique @default(uuid()) @db.Uuid
+  symbol             String @unique
+  baseAsset          String
+  quoteAsset         String
+  baseAssetPrecision Int
+  quotePrecision     Int
+
+  @@id(id)
+  // Combination of baseAsset and quoteAsset must be unique
+  @@unique([baseAsset, quoteAsset])
+  @@map("TradingPair")
+  @@schema("Currency")
+}
+
+//#endregion Currency
+
+//#region Trade
+enum OrderType {
+  BUY
+  SELL
+
+  @@schema("Trade")
+}
+
+enum OrderStatus {
+  PLACED
+  MATCHED
+  FILLED
+  EXPIRED
+  CANCELED
+
+  @@schema("Trade")
+}
+
+model Order {
+  id          String      @unique @default(uuid()) @db.Uuid
+  clientId    String      @unique
+  expireAt    DateTime
+  createdAt   DateTime    @default(now())
+  orderType   OrderType
+  orderStatus OrderStatus
+
+  client Client @relation(fields: [clientId], references: [id])
+
+  @@id(id)
+  @@map("Order")
+  @@schema("Trade")
+}
+
+//#endregion Trade
