@@ -45,12 +45,13 @@ model AccountManager {
 
 //#region Currency
 model TradingPair {
-  id                 String @unique @default(uuid()) @db.Uuid
-  symbol             String @unique
+  id                 String  @unique @default(uuid()) @db.Uuid
+  symbol             String  @unique
   baseAsset          String
   quoteAsset         String
   baseAssetPrecision Int
   quotePrecision     Int
+  Order              Order[]
 
   @@id(id)
   // Combination of baseAsset and quoteAsset must be unique
@@ -80,17 +81,39 @@ enum OrderStatus {
 }
 
 model Order {
-  id          String      @unique @default(uuid()) @db.Uuid
-  clientId    String      @unique
-  expireAt    DateTime
-  createdAt   DateTime    @default(now())
-  orderType   OrderType
-  orderStatus OrderStatus
-
-  client Client @relation(fields: [clientId], references: [id])
+  id             String       @unique @default(uuid()) @db.Uuid
+  price          Float
+  quantity       Float
+  expireAt       DateTime
+  type           OrderType
+  status         OrderStatus
+  clientId       String       @unique
+  createdAt      DateTime     @default(now())
+  tradingPairId  String       @db.Uuid
+  client         Client       @relation(fields: [clientId], references: [id])
+  tradingPair    TradingPair  @relation(fields: [tradingPairId], references: [id], onDelete: NoAction)
+  buyTradeMatch  TradeMatch[]
+  sellTradeMatch TradeMatch[]
+  TradeMatch     TradeMatch[]
+  TradeMatch     TradeMatch[]
 
   @@id(id)
   @@map("Order")
+  @@schema("Trade")
+}
+
+model TradeMatch {
+  id          String @unique @default(uuid()) @db.Uuid()
+  buyOrderId  String
+  sellOrderId String
+
+  buyOrder  Order   @relation("BuyOrder", fields: [buyOrderId], references: [id])
+  sellOrder Order   @relation("SellOrder", fields: [sellOrderId], references: [id])
+  Order     Order?  @relation(fields: [orderId], references: [id])
+  orderId   String? @db.Uuid
+
+  @@id(id)
+  @@map("TradeMatch")
   @@schema("Trade")
 }
 
