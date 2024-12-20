@@ -12,10 +12,10 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  schemas  = ["Profile", "Currency", "Trade"]
+  schemas  = ["User", "Currency", "Trade"]
 }
 
-//#region Profile
+//#region User
 model Client {
   id        String   @unique @default(uuid()) @db.Uuid
   name      String   @db.VarChar(32)
@@ -26,22 +26,23 @@ model Client {
 
   @@id(id)
   @@map("Client")
-  @@schema("Profile")
+  @@schema("User")
 }
 
 model AccountManager {
-  id        String   @unique @default(uuid()) @db.Uuid
-  name      String   @db.VarChar(32)
-  email     String   @unique @db.VarChar(254)
-  password  String
-  createdAt DateTime @default(now())
+  id           String         @unique @default(uuid()) @db.Uuid
+  name         String         @db.VarChar(32)
+  email        String         @unique @db.VarChar(254)
+  password     String
+  createdAt    DateTime       @default(now())
+  MatchedTrade MatchedTrade[] @relation("AccountManager")
 
   @@id(id)
   @@map("AccountManager")
-  @@schema("Profile")
+  @@schema("User")
 }
 
-//#endregion Profile
+//#endregion User
 
 //#region Currency
 model TradingPair {
@@ -71,9 +72,9 @@ enum OrderType {
 }
 
 enum OrderStatus {
-  PLACED
-  MATCHED
-  FILLED
+  PENDING
+  COMPLETED
+  REJECTED
   EXPIRED
   CANCELED
 
@@ -81,39 +82,41 @@ enum OrderStatus {
 }
 
 model Order {
-  id             String       @unique @default(uuid()) @db.Uuid
+  id             String         @unique @default(uuid()) @db.Uuid
   price          Float
   quantity       Float
-  expireAt       DateTime
-  type           OrderType
+  expiration     DateTime // Expiration date/time or duration
+  type           OrderType // Type of order: Buy/Sell
   status         OrderStatus
-  clientId       String       @unique
-  createdAt      DateTime     @default(now())
-  tradingPairId  String       @db.Uuid
-  client         Client       @relation(fields: [clientId], references: [id])
-  tradingPair    TradingPair  @relation(fields: [tradingPairId], references: [id], onDelete: NoAction)
-  buyTradeMatch  TradeMatch[]
-  sellTradeMatch TradeMatch[]
-  TradeMatch     TradeMatch[]
-  TradeMatch     TradeMatch[]
+  clientId       String         @unique
+  createdAt      DateTime       @default(now())
+  updateAt       DateTime       @updatedAt
+  tradingPairId  String         @db.Uuid
+  client         Client         @relation(fields: [clientId], references: [id])
+  tradingPair    TradingPair    @relation(fields: [tradingPairId], references: [id], onDelete: NoAction)
+  buyTradeMatch  MatchedTrade[] @relation("BuyOrder")
+  sellTradeMatch MatchedTrade[] @relation("SellOrder")
 
   @@id(id)
   @@map("Order")
   @@schema("Trade")
 }
 
-model TradeMatch {
-  id          String @unique @default(uuid()) @db.Uuid()
-  buyOrderId  String
-  sellOrderId String
+model MatchedTrade {
+  id               String   @unique @default(uuid()) @db.Uuid()
+  buyOrderId       String   @db.Uuid
+  sellOrderId      String   @db.Uuid
+  price            Float // Actual Price at which the orders were matched
+  quantity         Float // Actual Quantity matched
+  matchedAt        DateTime
+  accountManagerId String   @db.Uuid
 
-  buyOrder  Order   @relation("BuyOrder", fields: [buyOrderId], references: [id])
-  sellOrder Order   @relation("SellOrder", fields: [sellOrderId], references: [id])
-  Order     Order?  @relation(fields: [orderId], references: [id])
-  orderId   String? @db.Uuid
+  buyOrder       Order          @relation("BuyOrder", fields: [buyOrderId], references: [id])
+  sellOrder      Order          @relation("SellOrder", fields: [sellOrderId], references: [id])
+  accountManager AccountManager @relation("AccountManager", fields: [accountManagerId], references: [id])
 
   @@id(id)
-  @@map("TradeMatch")
+  @@map("MatchedTrade")
   @@schema("Trade")
 }
 

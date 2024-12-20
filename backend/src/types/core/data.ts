@@ -1,0 +1,1 @@
+export type StringUnknownI = Record<string, unknown>
