@@ -1,7 +1,7 @@
 import { ErrorCodeI, ErrorCodes, ErrorCodeValueI } from "../consts/api/errorCodes";
 import { HttpStatus } from "../consts/api/status";
 import { AppErrorJSONI } from "../types/api/appError";
-import { StringUnknownI } from "../types/core/data";
+import { StringUnknownI } from "../types/common/data";
 
 export class AppError {
   private _status: HttpStatus;

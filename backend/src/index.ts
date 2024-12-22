@@ -1,14 +1,17 @@
-import EnvVariables from './utils/loadEnv'
-import { errorHandler } from './middlewares/errorHandler'
-
 import Fastify from 'fastify'
+import EnvVariables from './utils/loadEnv'
+import { errorMiddleware } from './middlewares/errorMiddleware'
+import { serializerCompiler, validatorCompiler, type ZodTypeProvider } from 'fastify-type-provider-zod'
 import routes from './routes'
 
 const fastify = Fastify({
   logger: false
-})
-fastify.setErrorHandler(errorHandler)
-fastify.register(routes, { prefix: '/api' })
+}).withTypeProvider<ZodTypeProvider>().register(routes, { prefix: '/api', })
+
+fastify.setValidatorCompiler(validatorCompiler)
+fastify.setSerializerCompiler(serializerCompiler)
+fastify.setErrorHandler(errorMiddleware)
+
 fastify.listen({ port: EnvVariables.PORT }, (err, address) => {
   if (err) {
     throw err
