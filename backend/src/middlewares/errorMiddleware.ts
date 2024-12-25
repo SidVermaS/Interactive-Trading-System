@@ -2,14 +2,16 @@ import type { FastifyReply, FastifyRequest } from "fastify";
 import { AppError } from "../classes/appError";
 import z from "zod";
 
-export const errorMiddleware = (error: Error, request: FastifyRequest, reply: FastifyReply) => {
+export const errorMiddleware = (error: any, _request: FastifyRequest, reply: FastifyReply) => {
   let appError: AppError;
-  console.log('111 error');
-  console.log( error.name);
+  console.log('111 error', error instanceof z.ZodError, error instanceof AppError);
+  console.log(JSON.stringify(error?.validation));
 
   if (error instanceof AppError) {
     appError = error as AppError
-  } else if (error instanceof z.ZodError) {
+  }
+  // For ZodError
+  else if (error?.validation) {
     appError = new AppError('GEN002', { error: error.errors })
   } else {
     appError = new AppError('GEN001')

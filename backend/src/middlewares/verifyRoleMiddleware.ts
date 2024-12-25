@@ -5,5 +5,5 @@ import { AuthTokenI } from "../types/auth/auth";
 import { FastifyRequestReqI } from "../types/common/declarations";
 
 export const verifyRoleMiddleware = (request: FastifyRequestReqI, reply: FastifyReply) => {
-  
+
 }

@@ -22,7 +22,8 @@ model Client {
   email     String   @unique @db.VarChar(254)
   password  String
   createdAt DateTime @default(now())
-  Order     Order?
+  Order     Order?   @relation(fields: [orderId], references: [id])
+  orderId   String?  @db.Uuid
 
   @@id(id)
   @@map("Client")
@@ -46,13 +47,13 @@ model AccountManager {
 
 //#region Currency
 model TradingPair {
-  id                 String  @unique @default(uuid()) @db.Uuid
-  symbol             String  @unique
-  baseAsset          String
-  quoteAsset         String
-  baseAssetPrecision Int
-  quotePrecision     Int
-  Order              Order[]
+  id                  String  @unique @default(uuid()) @db.Uuid
+  symbol              String  @unique
+  baseAsset           String
+  quoteAsset          String
+  baseAssetPrecision  Int
+  quoteAssetPrecision Int
+  Order               Order[]
 
   @@id(id)
   // Combination of baseAsset and quoteAsset must be unique
@@ -82,20 +83,21 @@ enum OrderStatus {
 }
 
 model Order {
-  id             String         @unique @default(uuid()) @db.Uuid
-  price          Float
-  quantity       Float
-  expiration     DateTime // Expiration date/time or duration
-  type           OrderType // Type of order: Buy/Sell
-  status         OrderStatus
-  clientId       String         @unique
-  createdAt      DateTime       @default(now())
-  updateAt       DateTime       @updatedAt
-  tradingPairId  String         @db.Uuid
-  client         Client         @relation(fields: [clientId], references: [id])
+  id            String      @unique @default(uuid()) @db.Uuid
+  price         Float
+  quantity      Float
+  expiration    DateTime // Expiration date/time or duration
+  type          OrderType // Type of order: Buy/Sell
+  status        OrderStatus
+  clientId      String      @db.Uuid
+  createdAt     DateTime    @default(now())
+  updateAt      DateTime    @updatedAt
+  tradingPairId String      @db.Uuid
+
   tradingPair    TradingPair    @relation(fields: [tradingPairId], references: [id], onDelete: NoAction)
   buyTradeMatch  MatchedTrade[] @relation("BuyOrder")
   sellTradeMatch MatchedTrade[] @relation("SellOrder")
+  Client         Client[]
 
   @@id(id)
   @@map("Order")

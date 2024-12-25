@@ -1,11 +1,8 @@
 import { FastifyInstance } from "fastify";
-import authRoutes from "./v1/auth";
-import { authMiddleware } from "../middlewares/authMiddleware";
-
+import unsecureRoutes from "./unsecureRoutes";
+import secureRoutes from "./secureRoutes";
 const routes = (fastify: FastifyInstance) => {
-  fastify.register(authRoutes)
-  // console.log('111 routes',);
-  fastify.addHook('preHandler', authMiddleware)
-
+  fastify.register(unsecureRoutes)
+  fastify.register(secureRoutes)
 }
 export default routes

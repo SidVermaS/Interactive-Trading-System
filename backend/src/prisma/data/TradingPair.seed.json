@@ -1,0 +1,42 @@
+[
+  {
+    "id": "fc2f3bfd-c108-4721-9d29-e5fa3ebabf74",
+    "symbol": "BTCUSDT",
+    "baseAsset": "BTC",
+    "quoteAsset": "USDT",
+    "baseAssetPrecision": 8,
+    "quoteAssetPrecision": 8
+  },
+  {
+    "id": "304b750f-4447-4b30-895a-2fb96ead76dd",
+    "symbol": "ETHUSDT",
+    "baseAsset": "ETH",
+    "baseAssetPrecision": 8,
+    "quoteAsset": "USDT",
+    "quoteAssetPrecision": 8
+  },
+  {
+    "id": "2db4bcf9-bd80-42ce-9abc-368ba5438ff8",
+    "symbol": "BNBUSDT",
+    "baseAsset": "BNB",
+    "baseAssetPrecision": 8,
+    "quoteAsset": "USDT",
+    "quoteAssetPrecision": 8
+  },
+  {
+    "id": "0bea5e30-f2ca-4904-95af-8104b73d80b9",
+    "symbol": "NEOUSDT",
+    "baseAsset": "NEO",
+    "baseAssetPrecision": 8,
+    "quoteAsset": "USDT",
+    "quoteAssetPrecision": 8
+  },
+  {
+    "id": "623eaeb9-2f7c-4685-a2cd-ed2e3837c4c1",
+    "symbol": "LTCUSDT",
+    "baseAsset": "LTC",
+    "baseAssetPrecision": 8,
+    "quoteAsset": "USDT",
+    "quoteAssetPrecision": 8
+  }
+]
