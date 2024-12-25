@@ -5,7 +5,8 @@ import { serializerCompiler, validatorCompiler, type ZodTypeProvider } from 'fas
 import routes from './routes'
 
 const fastify = Fastify({
-  logger: false
+  logger: false,
+  
 }).withTypeProvider<ZodTypeProvider>().register(routes, { prefix: '/api', })
 fastify.setValidatorCompiler(validatorCompiler)
 fastify.setSerializerCompiler(serializerCompiler)

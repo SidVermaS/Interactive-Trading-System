@@ -19,7 +19,7 @@ const ClientModule = {
         email: params.email,
         password: hashedPassword,
       }
-    })
+    })    
     if (!client) {
       throw new AppError('CLNT002')
     }

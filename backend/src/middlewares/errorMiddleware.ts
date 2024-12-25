@@ -1,18 +1,19 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import { AppError } from "../classes/appError";
-import z from "zod";
+import { castToAny } from "../utils/common/data";
 
-export const errorMiddleware = (error: any, _request: FastifyRequest, reply: FastifyReply) => {
+export const errorMiddleware = (_error: unknown, _request: FastifyRequest, reply: FastifyReply) => {
+
   let appError: AppError;
-  console.log('111 error', error instanceof z.ZodError, error instanceof AppError);
-  console.log(JSON.stringify(error?.validation));
-
-  if (error instanceof AppError) {
-    appError = error as AppError
+  if (_error instanceof AppError) {
+    appError = _error as AppError
   }
   // For ZodError
-  else if (error?.validation) {
-    appError = new AppError('GEN002', { error: error.errors })
+  else if (castToAny(_error)?.validation) {
+    const error = castToAny(_error)
+    const validation = error.validation.map((item: { params: { issue: { path: string[]; message: string; expected: string; }; }; }) => ({ attribute: item.params.issue.path[0], message: item.params.issue.message, expected: item.params.issue.expected, }))
+
+    appError = new AppError('GEN002', { error: validation })
   } else {
     appError = new AppError('GEN001')
   }

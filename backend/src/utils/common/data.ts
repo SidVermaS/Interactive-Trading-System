@@ -1,0 +1,1 @@
+export const castToAny = (data: unknown) => JSON.parse(JSON.stringify(data))

@@ -33,6 +33,7 @@ export class AppError {
   // json for the response
   get json(): AppErrorJSONI {
     return {
+      code: this._errorCode,
       message: this.message,
       ...({ ...this._data })
     }

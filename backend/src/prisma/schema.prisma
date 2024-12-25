@@ -22,8 +22,7 @@ model Client {
   email     String   @unique @db.VarChar(254)
   password  String
   createdAt DateTime @default(now())
-  Order     Order?   @relation(fields: [orderId], references: [id])
-  orderId   String?  @db.Uuid
+  Order     Order[]
 
   @@id(id)
   @@map("Client")
@@ -97,7 +96,8 @@ model Order {
   tradingPair    TradingPair    @relation(fields: [tradingPairId], references: [id], onDelete: NoAction)
   buyTradeMatch  MatchedTrade[] @relation("BuyOrder")
   sellTradeMatch MatchedTrade[] @relation("SellOrder")
-  Client         Client[]
+
+  client Client @relation(fields: [clientId], references: [id])
 
   @@id(id)
   @@map("Order")

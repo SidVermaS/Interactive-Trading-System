@@ -20,7 +20,6 @@ CREATE TABLE "User"."Client" (
     "email" VARCHAR(254) NOT NULL,
     "password" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "orderId" UUID,
 
     CONSTRAINT "Client_pkey" PRIMARY KEY ("id")
 );
@@ -105,10 +104,10 @@ CREATE UNIQUE INDEX "Order_id_key" ON "Trade"."Order"("id");
 CREATE UNIQUE INDEX "MatchedTrade_id_key" ON "Trade"."MatchedTrade"("id");
 
 -- AddForeignKey
-ALTER TABLE "User"."Client" ADD CONSTRAINT "Client_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "Trade"."Order"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Trade"."Order" ADD CONSTRAINT "Order_tradingPairId_fkey" FOREIGN KEY ("tradingPairId") REFERENCES "Currency"."TradingPair"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Trade"."Order" ADD CONSTRAINT "Order_tradingPairId_fkey" FOREIGN KEY ("tradingPairId") REFERENCES "Currency"."TradingPair"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
+ALTER TABLE "Trade"."Order" ADD CONSTRAINT "Order_clientId_fkey" FOREIGN KEY ("clientId") REFERENCES "User"."Client"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Trade"."MatchedTrade" ADD CONSTRAINT "MatchedTrade_buyOrderId_fkey" FOREIGN KEY ("buyOrderId") REFERENCES "Trade"."Order"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

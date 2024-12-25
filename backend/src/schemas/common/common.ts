@@ -9,9 +9,9 @@ export const UserTypeSchema = z.enum(['CLIENT' as UserTypesI, 'ACCOUNT_MANAGER' 
 
 export const PaginationSchema = z.object({
   page: z.number().min(1).optional().default(1),
-  limit: z.number().min(1).optional().default(10)
-}).transform(({ page, limit }) => ({
-  page: (page - 1) + limit,
-  limit: limit > 25 ? 10 : limit
+  pageSize: z.number().min(1).optional().default(10)
+}).transform(({ page, pageSize }) => ({
+  page: (page - 1) * pageSize,
+  pageSize: pageSize > 25 ? 10 : pageSize
 }))
 export type PaginationI = z.infer<typeof PaginationSchema>
