@@ -1,4 +1,4 @@
-import { type AccountManager, Prisma } from "@prisma/accountManager"
+import { type AccountManager, Prisma } from "@prisma/client"
 import prisma from "../../config/db"
 import { AppError } from "../../classes/appError"
 import { hashPassword, verifyPassword } from "../../utils/auth/auth"

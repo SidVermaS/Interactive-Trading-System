@@ -50,6 +50,12 @@ export const ErrorCodes: ErrorCodeDataI = {
     message: 'AccountManager not found'
   },
   //#endregion AccountManager
+  //#region Order
+  'ORD001': {
+    status: HttpStatus.UNPROCESSABLE_ENTITY,
+    message: 'Failed to create the Order'
+  },
+  //#endregion Order
 }
 
 export type ErrorCodeI = keyof typeof ErrorCodes

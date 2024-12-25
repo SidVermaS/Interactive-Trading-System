@@ -1,6 +1,6 @@
 import { FastifyInstance } from "fastify";
-import authRoutes from "./v1/auth/register";
-import { authMiddleware } from "../middlewares/authHandler";
+import authRoutes from "./v1/auth";
+import { authMiddleware } from "../middlewares/authMiddleware";
 
 const routes = (fastify: FastifyInstance) => {
   fastify.register(authRoutes)

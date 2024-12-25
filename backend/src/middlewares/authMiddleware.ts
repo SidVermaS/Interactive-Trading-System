@@ -1,9 +1,10 @@
-import type { FastifyReply, FastifyRequest } from "fastify";
+import { FastifyReply, } from "fastify";
 import { HttpStatus } from "../consts/api/status";
 import { verifyToken } from "../utils/auth/jwt";
 import { AuthTokenI } from "../types/auth/auth";
+import { FastifyRequestReqI } from "../types/common/declarations";
 
-export const authMiddleware = (request: FastifyRequest, reply: FastifyReply) => {
+export const authMiddleware = (request: FastifyRequestReqI, reply: FastifyReply) => {
   const authHeader: string | undefined = request.headers.authorization
   if (!authHeader) {
     return reply.status(HttpStatus.UNAUTHORIZED).send({ message: 'Unauthorized' })
@@ -16,6 +17,5 @@ export const authMiddleware = (request: FastifyRequest, reply: FastifyReply) => 
     }
   } catch (_error) {
     return reply.status(HttpStatus.UNAUTHORIZED).send({ message: 'Unauthorized' })
-
   }
 }

@@ -5,6 +5,9 @@
     "declaration": false,
     "sourceMap": true
   },
-  "include": ["src/**/*.ts", "src/types/declarations/fastify.d.ts"],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts"
+  ],
   "exclude": [".eslintrc.js"]
 }

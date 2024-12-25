@@ -7,7 +7,6 @@ import routes from './routes'
 const fastify = Fastify({
   logger: false
 }).withTypeProvider<ZodTypeProvider>().register(routes, { prefix: '/api', })
-
 fastify.setValidatorCompiler(validatorCompiler)
 fastify.setSerializerCompiler(serializerCompiler)
 fastify.setErrorHandler(errorMiddleware)
