@@ -39,6 +39,11 @@ CREATE TABLE "User"."AccountManager" (
 CREATE TABLE "Currency"."TradingPair" (
     "id" UUID NOT NULL,
     "symbol" TEXT NOT NULL,
+    "price" DECIMAL(18,8) NOT NULL,
+    "minPrice" DECIMAL(18,8) NOT NULL,
+    "maxPrice" DECIMAL(18,8) NOT NULL,
+    "minQty" DECIMAL(18,8) NOT NULL,
+    "maxQty" DECIMAL(18,8) NOT NULL,
     "baseAsset" TEXT NOT NULL,
     "quoteAsset" TEXT NOT NULL,
     "baseAssetPrecision" INTEGER NOT NULL,
@@ -50,11 +55,11 @@ CREATE TABLE "Currency"."TradingPair" (
 -- CreateTable
 CREATE TABLE "Trade"."Order" (
     "id" UUID NOT NULL,
-    "price" DOUBLE PRECISION NOT NULL,
-    "quantity" DOUBLE PRECISION NOT NULL,
+    "price" DECIMAL(18,8) NOT NULL,
+    "quantity" DECIMAL(18,8) NOT NULL,
     "expiration" TIMESTAMP(3) NOT NULL,
     "type" "Trade"."OrderType" NOT NULL,
-    "status" "Trade"."OrderStatus" NOT NULL,
+    "status" "Trade"."OrderStatus" NOT NULL DEFAULT 'PENDING',
     "clientId" UUID NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updateAt" TIMESTAMP(3) NOT NULL,

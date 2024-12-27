@@ -1,4 +1,4 @@
-import { HttpStatus } from "./status";
+import { HttpStatus } from "../api/status";
 
 export type ErrorCodeValueI = {
   status: HttpStatus
@@ -16,6 +16,10 @@ export const ErrorCodes: ErrorCodeDataI = {
   'GEN002': {
     status: HttpStatus.BAD_REQUEST,
     message: 'Invalid payload\'s data'
+  },
+  'GEN003': {
+    status: HttpStatus.BAD_REQUEST,
+    message: 'Syntatical error in the payload\'s data'
   },
   //#region Auth
   'AUTH001': {
@@ -36,6 +40,10 @@ export const ErrorCodes: ErrorCodeDataI = {
     status: HttpStatus.NOT_FOUND,
     message: 'Client not found'
   },
+  'CLNT004': {
+    status: HttpStatus.CONFLICT,
+    message: 'Email id isn\'t registered'
+  },
   //#endregion Client
   //#region AccountManager
   'ACMG001': {
@@ -45,7 +53,8 @@ export const ErrorCodes: ErrorCodeDataI = {
   'ACMG002': {
     status: HttpStatus.UNPROCESSABLE_ENTITY,
     message: 'Failed to create the AccountManager'
-  }, 'ACMG00': {
+  },
+  'ACMG00': {
     status: HttpStatus.NOT_FOUND,
     message: 'AccountManager not found'
   },
@@ -55,7 +64,21 @@ export const ErrorCodes: ErrorCodeDataI = {
     status: HttpStatus.UNPROCESSABLE_ENTITY,
     message: 'Failed to create the Order'
   },
+  'ORD002': {
+    status: HttpStatus.BAD_REQUEST,
+    message: 'The payload for trading pair is invalid'
+  },
+  'ORD003': {
+    status: HttpStatus.NOT_FOUND,
+    message: 'Order not found'
+  },
   //#endregion Order
+  //#region Currency
+  'CUR001': {
+    status: HttpStatus.NOT_FOUND,
+    message: 'TradingPair not found'
+  },
+  //#endregion Currency
 }
 
 export type ErrorCodeI = keyof typeof ErrorCodes

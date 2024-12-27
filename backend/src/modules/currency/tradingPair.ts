@@ -2,6 +2,7 @@ import { Prisma, TradingPair } from "@prisma/client";
 import { PaginationI } from "../../schemas/common/common";
 import prisma from "../../config/db";
 import { PAGINATION } from "../../consts/common/pagination";
+import { AppError } from "../../classes/appError";
 
 export const TradingPairModule = {
   fetch: async (filters?: Prisma.TradingPairWhereInput, pagination: PaginationI = PAGINATION, orderBy: Prisma.TradingPairOrderByWithRelationInput = { symbol: 'asc' }, select: Prisma.TradingPairSelect = { id: true, symbol: true, baseAsset: true, baseAssetPrecision: true, quoteAsset: true, quoteAssetPrecision: true, }): Promise<TradingPair[]> => {
@@ -11,5 +12,14 @@ export const TradingPairModule = {
       take: pagination.pageSize
     })
     return result;
-  }
+  },
+  fetchById: async (filters?: Prisma.TradingPairWhereInput, select: Prisma.TradingPairSelect = { id: true, symbol: true, baseAsset: true, baseAssetPrecision: true, quoteAsset: true, quoteAssetPrecision: true, }): Promise<TradingPair> => {
+    const result = await prisma.tradingPair.findFirst({
+      where: filters, select,
+    })
+    if (!result) {
+      throw new AppError('CUR001')
+    }
+    return result;
+  },
 }

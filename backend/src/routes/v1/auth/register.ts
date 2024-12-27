@@ -12,9 +12,8 @@ const registerRoutes = async (fastify: FastifyInstance, _options: FastifyPluginO
     schema: { body: AuthRegisterReqSchema, }
   }, async (request: FastifyRequest, reply: FastifyReply,) => {
 
-    const result = await AuthModule.register(request.body as AuthRegisterReqI)
-    console.log('111 4 register', result);
-    return reply.status(HttpStatus.CREATED).send()
+    await AuthModule.register(request.body as AuthRegisterReqI)
+    reply.status(HttpStatus.CREATED).send()
   })
 }
 export default registerRoutes

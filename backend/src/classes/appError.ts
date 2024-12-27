@@ -1,4 +1,4 @@
-import { ErrorCodeI, ErrorCodes, ErrorCodeValueI } from "../consts/api/errorCodes";
+import { ErrorCodeI, ErrorCodes, ErrorCodeValueI } from "../consts/common/errorCodes";
 import { HttpStatus } from "../consts/api/status";
 import { AppErrorJSONI } from "../types/api/appError";
 import { StringUnknownI } from "../types/common/data";

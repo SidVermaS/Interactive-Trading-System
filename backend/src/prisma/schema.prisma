@@ -48,6 +48,11 @@ model AccountManager {
 model TradingPair {
   id                  String  @unique @default(uuid()) @db.Uuid
   symbol              String  @unique
+  price               Decimal @db.Decimal(18, 8)
+  minPrice            Decimal @db.Decimal(18, 8)
+  maxPrice            Decimal @db.Decimal(18, 8)
+  minQty              Decimal @db.Decimal(18, 8)
+  maxQty              Decimal @db.Decimal(18, 8)
   baseAsset           String
   quoteAsset          String
   baseAssetPrecision  Int
@@ -83,11 +88,11 @@ enum OrderStatus {
 
 model Order {
   id            String      @unique @default(uuid()) @db.Uuid
-  price         Float
-  quantity      Float
+  price         Decimal     @db.Decimal(18, 8)
+  quantity      Decimal     @db.Decimal(18, 8)
   expiration    DateTime // Expiration date/time or duration
   type          OrderType // Type of order: Buy/Sell
-  status        OrderStatus
+  status        OrderStatus @default(PENDING)
   clientId      String      @db.Uuid
   createdAt     DateTime    @default(now())
   updateAt      DateTime    @updatedAt

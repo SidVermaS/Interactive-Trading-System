@@ -9,3 +9,6 @@ export type PaginationResponseI<T> = {
     totalPages: number;
   }
 }
+export type PickAtLeastOne<T, Keys extends keyof T> = {
+  [K in Keys]: Pick<T, K> & Partial<Pick<T, Exclude<Keys, K>>>;
+}[Keys];

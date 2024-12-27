@@ -15,3 +15,8 @@ export const PaginationSchema = z.object({
   pageSize: pageSize > 25 ? 10 : pageSize
 }))
 export type PaginationI = z.infer<typeof PaginationSchema>
+
+export const RouteParamsSchema = z.object({
+  id: z.string().uuid()
+})
+export type RouteParamsI = z.infer<typeof RouteParamsSchema>

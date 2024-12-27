@@ -1,6 +1,6 @@
-import { Orders } from "./order"
+import OrderModule from "./order"
 
 const Trade = {
-  Orders,
+  OrderModule,
 }
 export default Trade

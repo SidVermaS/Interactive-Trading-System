@@ -10,7 +10,7 @@ const ClientModule = {
   findByEmail: async (email: string, select: Prisma.ClientSelect = { id: true }): Promise<Client | null> => await prisma.client.findFirst({ select, where: { email } }),
   register: async (params: Pick<Prisma.ClientCreateInput, 'name' | 'email' | 'password'>): Promise<Pick<Client, 'id'>> => {
     if (await ClientModule.findByEmail(params.email)) {
-      throw new AppError('CLNT001')
+      throw new AppError('CLNT004')
     }
     const hashedPassword = await hashPassword(params.password)
     const client: Pick<Client, 'id'> | null = await prisma.client.create({
@@ -27,7 +27,7 @@ const ClientModule = {
   },
   login: async (params: AuthLoginReqI): Promise<AuthLoginResI> => {
     if (!(await ClientModule.findByEmail(params.email))) {
-      throw new AppError('CLNT001')
+      throw new AppError('CLNT004')
     }
     const client: Pick<Client, 'id' | 'name' | 'email' | 'password'> | null = await prisma.client.findFirst({ select: { id: true, name: true, email: true, password: true }, where: { email: params.email } })
 

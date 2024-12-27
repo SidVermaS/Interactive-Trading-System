@@ -12,7 +12,7 @@ const loginRoutes = async (fastify: FastifyInstance, _options: FastifyPluginOpti
     schema: { body: AuthLoginReqSchema }
   }, async (request: FastifyRequest, reply: FastifyReply,) => {
     const res: AuthLoginResI = await AuthModule.login(request.body as AuthRegisterReqI)
-    return reply.status(HttpStatus.OK).send(res)
+    reply.status(HttpStatus.OK).send(res)
   })
 }
 export default loginRoutes

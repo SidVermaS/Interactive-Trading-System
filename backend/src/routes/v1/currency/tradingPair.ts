@@ -11,7 +11,7 @@ const tradingPairRoutes = async (fastify: FastifyInstance, _options: FastifyPlug
   fastify.get('/v1/currency/trading-pair', {}, async (request: FastifyRequest, reply: FastifyReply,) => {
     const pagination = PaginationSchema.parse(request.query)
     const result = await Currency.TradingPairModule.fetch(undefined, pagination)
-    return reply.status(HttpStatus.OK).send(result)
+    reply.status(HttpStatus.OK).send(result)
   })
 }
 export default tradingPairRoutes
