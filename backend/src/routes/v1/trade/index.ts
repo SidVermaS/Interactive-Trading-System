@@ -1,7 +1,9 @@
 import { FastifyInstance } from "fastify";
-import orderForClientRoutes from "./order/client";
+import currentOrdersForClientRoutes from "./order/current/client";
+import historicalOrdersForClientRoutes from "./order/history/client";
 
 const tradeRoutes = (fastify: FastifyInstance): void => {
-  fastify.register(orderForClientRoutes)
+  fastify.register(currentOrdersForClientRoutes)
+  fastify.register(historicalOrdersForClientRoutes)
 }
 export default tradeRoutes

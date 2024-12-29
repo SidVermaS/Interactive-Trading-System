@@ -5,12 +5,26 @@ import { hashPassword, verifyPassword } from "../../utils/auth/auth"
 import { AuthLoginReqI } from "../../schemas/auth/auth"
 import { AuthLoginResI } from "../../types/auth/auth"
 import { generateToken } from "../../utils/auth/jwt"
+import { PAGINATION } from "../../consts/common/pagination"
+import { PaginationI } from "../../schemas/common/common"
 
 const ClientModule = {
+  fetch: async (filters?: Prisma.ClientWhereInput, pagination: PaginationI = PAGINATION, orderBy: Prisma.ClientOrderByWithRelationInput = { createdAt: 'asc' }, select: Prisma.ClientSelect = {
+    id: true
+  }) => {
+    const result = await prisma.client.findMany({
+      where: filters,
+      select: { ...select, password: false }
+    })
+    if (!result) {
+      throw new AppError('CLNT005')
+    }
+    return result;
+  },
   findByEmail: async (email: string, select: Prisma.ClientSelect = { id: true }): Promise<Client | null> => await prisma.client.findFirst({ select, where: { email } }),
   register: async (params: Pick<Prisma.ClientCreateInput, 'name' | 'email' | 'password'>): Promise<Pick<Client, 'id'>> => {
     if (await ClientModule.findByEmail(params.email)) {
-      throw new AppError('CLNT004')
+      throw new AppError('CLNT001')
     }
     const hashedPassword = await hashPassword(params.password)
     const client: Pick<Client, 'id'> | null = await prisma.client.create({
@@ -19,7 +33,7 @@ const ClientModule = {
         email: params.email,
         password: hashedPassword,
       }
-    })    
+    })
     if (!client) {
       throw new AppError('CLNT002')
     }

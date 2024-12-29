@@ -4,7 +4,8 @@ import { castToAny } from "../utils/common/data";
 import { Prisma } from "@prisma/client";
 
 export const errorMiddleware = (_error: unknown, _request: FastifyRequest, reply: FastifyReply) => {
-
+  console.log(_error);
+  
   let appError: AppError;
   if (_error instanceof AppError) {
     appError = _error as AppError

@@ -5,12 +5,28 @@ import { z } from "zod";
 import { TradingPairModule } from "../currency/tradingPair";
 import { validationError } from "../../utils/common/error";
 import { PrismaErrorCodes } from "../../consts/common/prismaErrorCodes";
+import { PaginationI } from "../../schemas/common/common";
+import { PAGINATION } from "../../consts/common/pagination";
 // import { PAGINATION } from "../../consts/common/pagination";
 // import type { PaginationI } from "../../schemas/common/common";
 const OrderModule = {
-  // fetch: (filters?: Prisma.OrderWhereInput, pagination: PaginationI = PAGINATION, orderBy: Prisma.OrderOrderByWithRelationInput = { createdAt: 'asc' }, select: Prisma.OrderSelect = { id: true, symbol: true, baseAsset: true, baseAssetPrecision: true, quoteAsset: true, quoteAssetPrecision: true, }) => {
-
-  // },
+  fetch: async (filters?: Prisma.OrderWhereInput, pagination: PaginationI = PAGINATION, orderBy: Prisma.OrderOrderByWithRelationInput = { createdAt: 'asc' }, select: Prisma.OrderSelect = {
+    id: true, price: true, expiration: true, quantity: true, type: true, status: true, createdAt: true,
+    tradingPair: {
+      select: {
+        symbol: true,
+      }
+    }
+  }) => {
+    const result = await prisma.order.findMany({
+      where: filters,
+      select
+    })
+    if (!result) {
+      throw new AppError('ORD004')
+    }
+    return result;
+  },
   createForClient: async (params: Pick<Prisma.OrderUncheckedCreateInput, 'price' | 'quantity' | 'expiration' | 'type' | 'tradingPairId' | 'clientId'>): Promise<Order> => {
     await OrderModule.validatePriceQty(params)
     const result = await prisma.order.create({ data: params, })

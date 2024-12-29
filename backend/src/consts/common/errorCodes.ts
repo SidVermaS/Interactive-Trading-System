@@ -44,6 +44,10 @@ export const ErrorCodes: ErrorCodeDataI = {
     status: HttpStatus.CONFLICT,
     message: 'Email id isn\'t registered'
   },
+  'CLNT005': {
+    status: HttpStatus.UNPROCESSABLE_ENTITY,
+    message: 'Failed to fetch the Clients'
+  },
   //#endregion Client
   //#region AccountManager
   'ACMG001': {
@@ -72,11 +76,23 @@ export const ErrorCodes: ErrorCodeDataI = {
     status: HttpStatus.NOT_FOUND,
     message: 'Order not found'
   },
+  'ORD004': {
+    status: HttpStatus.UNPROCESSABLE_ENTITY,
+    message: 'Failed to fetch the Orders'
+  },
   //#endregion Order
   //#region Currency
   'CUR001': {
     status: HttpStatus.NOT_FOUND,
     message: 'TradingPair not found'
+  },
+  'CUR002': {
+    status: HttpStatus.NOT_FOUND,
+    message: 'TradingPair not found'
+  },
+  'CUR003': {
+    status: HttpStatus.UNPROCESSABLE_ENTITY,
+    message: 'Failed to update the TradingPair'
   },
   //#endregion Currency
 }

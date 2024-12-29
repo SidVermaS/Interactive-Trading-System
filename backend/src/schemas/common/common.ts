@@ -8,8 +8,10 @@ export const EmailSchema = z.string().email()
 export const UserTypeSchema = z.enum(['CLIENT' as UserTypesI, 'ACCOUNT_MANAGER' as UserTypesI])
 
 export const PaginationSchema = z.object({
-  page: z.number().min(1).optional().default(1),
-  pageSize: z.number().min(1).optional().default(10)
+  page: z.string().default('1').transform((data) => parseInt(data)).refine(data => data > 0, { message: 'page must be greater than 0' }),
+  pageSize: z.string().default('10').transform((data)=>parseInt(data)).refine((data)=>data>0 && data<=25, {
+    message: 'pageSize must be between 1 and 25'
+  }),
 }).transform(({ page, pageSize }) => ({
   page: (page - 1) * pageSize,
   pageSize: pageSize > 25 ? 10 : pageSize

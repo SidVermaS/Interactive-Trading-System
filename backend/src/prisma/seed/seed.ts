@@ -4,12 +4,16 @@ const seedMeta = [
   {
     table: prisma.tradingPair,
     fileName: 'TradingPair.seed.json'
+  },
+  {
+    table: prisma.client,
+    fileName: 'Client.seed.json'
   }
 ]
 const main = async () => {
   for (const seedMetaItem of seedMeta) {
     const data = JSON.parse(await fs.readFileSync(`src/prisma/data/${seedMetaItem.fileName}`, 'utf-8'))
-    await seedMetaItem.table.createMany({ data })
+    await (seedMetaItem.table as any).createMany({ data })
   }
 }
 (async () => {
