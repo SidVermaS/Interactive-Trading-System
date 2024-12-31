@@ -90,6 +90,7 @@ model Order {
   id            String      @unique @default(uuid()) @db.Uuid
   price         Decimal     @db.Decimal(18, 8)
   quantity      Decimal     @db.Decimal(18, 8)
+  duration      String?     @db.VarChar(15) // 5_SECONDS, 5_MINUTES, 5_HOURS, 5_DAYS, 5_WEEKS
   expiration    DateTime // Expiration date/time or duration
   type          OrderType // Type of order: Buy/Sell
   status        OrderStatus @default(PENDING)
